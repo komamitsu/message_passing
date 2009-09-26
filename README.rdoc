@@ -1,5 +1,5 @@
 = message_passing
-This is a method for creating real message passing (via TCP/IP) class.
+This is a method for creating real message passing (via TCP/IP) class. The method is using dRuby.
 
 == Usage
 You can use "rclass" method like as "class" keyword. But you should use symbols instead of the constant of the class name and a block statement.
