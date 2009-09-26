@@ -2,7 +2,7 @@
 This is a method for creating real message passing (via TCP/IP) class. The method is using dRuby.
 
 == Usage
-You can use "rclass" method like as "class" keyword. But you should use symbols instead of the constant of the class name and a block statement.
+You can use "rclass" method like "class" keyword. But you should use symbols instead of the constant of the class name and a block statement.
 
 == Example
   require 'rclass'
@@ -27,8 +27,14 @@ You can use "rclass" method like as "class" keyword. But you should use symbols 
   bar = Hoge.new('bar', 66)
   bar.hello('barbar')
 
-If you run this sample code, you can see the real TCP/IP message passing like the below.
-  komamitsu@potato:~/lab/ruby$ sudo tcpdump -i lo
+If you run this sample code, you can see the following output.
+
+  [foo(55)] hello foofoo (1)
+  [bar(66)] hello barbar (2)
+
+In fact, the instance methods are called via TCP/IP.
+
+  $ sudo tcpdump -i lo
   tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
   listening on lo, link-type EN10MB (Ethernet), capture size 96 bytes
   22:41:30.883017 IP localhost.59161 > localhost.50644: S 2553330194:2553330194(0) win 32792 <mss 16396,sackOK,timestamp 4699991 0,nop,wscale 6>
