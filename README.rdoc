@@ -1,0 +1,57 @@
+= message_passing
+This is a method for creating real message passing (via TCP/IP) class.
+
+== Usage
+You can use "rclass" method like as "class" keyword. But you should use symbols instead of the constant of the class name and a block statement.
+
+== Example
+  require 'rclass'
+  
+  rclass :Hoge do
+    @@counter = 0
+  
+    def initialize(name, age)
+      @name = name
+      @age = age
+      @@counter += 1
+    end
+  
+    def hello(something)
+      puts "[#{@name}(#{@age})] hello #{something} (#{@@counter})"
+    end
+  end
+  
+  foo = Hoge.new('foo', 55)
+  foo.hello('foofoo')
+  
+  bar = Hoge.new('bar', 66)
+  bar.hello('barbar')
+
+If you run this sample code, you can see the real TCP/IP message passing like the below.
+  komamitsu@potato:~/lab/ruby$ sudo tcpdump -i lo
+  tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+  listening on lo, link-type EN10MB (Ethernet), capture size 96 bytes
+  22:41:30.883017 IP localhost.59161 > localhost.50644: S 2553330194:2553330194(0) win 32792 <mss 16396,sackOK,timestamp 4699991 0,nop,wscale 6>
+  22:41:30.883060 IP localhost.50644 > localhost.59161: S 2559860307:2559860307(0) ack 2553330195 win 32768 <mss 16396,sackOK,timestamp 4699991 4699991,nop,wscale 6>
+  22:41:30.883091 IP localhost.59161 > localhost.50644: . ack 1 win 513 <nop,nop,timestamp 4699991 4699991>
+  22:41:30.886459 IP localhost.59161 > localhost.50644: P 1:50(49) ack 1 win 513 <nop,nop,timestamp 4699991 4699991>
+  22:41:30.886503 IP localhost.50644 > localhost.59161: . ack 50 win 512 <nop,nop,timestamp 4699992 4699991>
+  22:41:30.890149 IP localhost.50644 > localhost.59161: P 1:15(14) ack 50 win 512 <nop,nop,timestamp 4699992 4699991>
+  22:41:30.890186 IP localhost.59161 > localhost.50644: . ack 15 win 513 <nop,nop,timestamp 4699992 4699992>
+  22:41:30.894267 IP localhost.44877 > localhost.46949: S 2556739946:2556739946(0) win 32792 <mss 16396,sackOK,timestamp 4699993 0,nop,wscale 6>
+  22:41:30.894312 IP localhost.46949 > localhost.44877: S 2545866043:2545866043(0) ack 2556739947 win 32768 <mss 16396,sackOK,timestamp 4699993 4699993,nop,wscale 6>
+  22:41:30.894347 IP localhost.44877 > localhost.46949: . ack 1 win 513 <nop,nop,timestamp 4699993 4699993>
+  22:41:30.896801 IP localhost.44877 > localhost.46949: P 1:50(49) ack 1 win 513 <nop,nop,timestamp 4699994 4699993>
+  22:41:30.896843 IP localhost.46949 > localhost.44877: . ack 50 win 512 <nop,nop,timestamp 4699994 4699994>
+  22:41:30.901346 IP localhost.46949 > localhost.44877: P 1:15(14) ack 50 win 512 <nop,nop,timestamp 4699995 4699994>
+  22:41:30.901383 IP localhost.44877 > localhost.46949: . ack 15 win 513 <nop,nop,timestamp 4699995 4699995>
+  22:41:30.903239 IP localhost.46949 > localhost.44877: F 15:15(0) ack 50 win 512 <nop,nop,timestamp 4699996 4699995>
+  22:41:30.904404 IP localhost.50644 > localhost.59161: F 15:15(0) ack 50 win 512 <nop,nop,timestamp 4699996 4699992>
+  22:41:30.906363 IP localhost.44877 > localhost.46949: F 50:50(0) ack 16 win 513 <nop,nop,timestamp 4699996 4699996>
+  22:41:30.906496 IP localhost.46949 > localhost.44877: . ack 51 win 512 <nop,nop,timestamp 4699997 4699996>
+  22:41:30.907004 IP localhost.59161 > localhost.50644: F 50:50(0) ack 16 win 513 <nop,nop,timestamp 4699997 4699996>
+  22:41:30.907055 IP localhost.50644 > localhost.59161: . ack 51 win 512 <nop,nop,timestamp 4699997 4699997>
+  
+== Author
+Mitsunori Komatsu
+
